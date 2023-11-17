@@ -1,36 +1,13 @@
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 
 # Apache Beam Examples Using SamzaRunner
-
-The examples in this repository serve to demonstrate
-running Beam pipelines with SamzaRunner locally, in Yarn cluster,
-or in standalone cluster with Zookeeper. More complex pipelines
-can be built from here and run in similar manner.  
+## Introduction 
+ETL sales data using Samza + Kafka. Then use Grafana to visualize the data
 
 ### Example Pipelines
 The following examples are included:
 
-1. [`WordCount`](https://github.com/apache/samza-beam-examples/blob/master/src/main/java/org/apache/beam/examples/WordCount.java) reads a file as input (bounded data source), and computes word frequencies. 
-
-2. [`KafkaWordCount`](https://github.com/apache/samza-beam-examples/blob/master/src/main/java/org/apache/beam/examples/KafkaWordCount.java) does the same word-count computation but reading from a Kafka stream (unbounded data source). It uses a fixed 10-sec window to aggregate the counts.
-
+1. (https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/blob/main/src/main/java/org/apache/beam/examples/TranformKafka.java)]  perform calculations taking only the columns needed to analyze the data. It uses a fixed 10 second window to aggregate counts.
+2. https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/blob/main/src/main/java/org/apache/beam/examples/ConsumerKafka.java
 ### Run the Examples
 
 Each example can be run locally, in Yarn cluster or in standalone cluster. Here we use KafkaWordCount as an example.
@@ -72,7 +49,7 @@ $ ./deploy/kafka/bin/kafka-topics.sh  --zookeeper localhost:2181 --create --topi
 You can run directly within the project using maven:
 
 ```
-$ mvn compile exec:java -Dexec.mainClass=org.apache.beam.examples.KafkaWordCount \
+$ mvn compile exec:java -Dexec.mainClass=org.apache.beam.examples.TranformKafka \
     -Dexec.args="--runner=SamzaRunner --experiments=use_deprecated_read" -P samza-runner
 ```
 
@@ -121,25 +98,6 @@ $ ./deploy/kafka/bin/kafka-console-producer.sh --topic input-text --broker-list 
 Nory was a Catholic because her mother was a Catholic, and Nory’s mother was a Catholic because her father was a Catholic, and her father was a Catholic because his mother was a Catholic, or had been.
 ```
 
-You should see the word count shows up in the consumer console in about 10 secs:
-
-```
-a       6
-br      1
-mother  3
-was     6
-Catholic        6
-his     1
-Nory    2
-s       1
-father  2
-had     1
-been    1
-and     2
-her     3
-or      1
-because 3
-```
 
 ### Beyond Examples
 Feel free to build more complex pipelines based on the examples above, and reach out to us:
