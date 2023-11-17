@@ -13,8 +13,8 @@ Get ideas from: (https://github.com/apache/samza-beam-examples) The examples in 
 ### Example Pipelines
 The following examples are included:
 
-1. (https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/blob/main/src/main/java/org/apache/beam/examples/TranformKafka.java)]  perform calculations taking only the columns needed to analyze the data. It uses a fixed 10 second window to aggregate counts.
-2. (https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/blob/main/src/main/java/org/apache/beam/examples/ConsumerKafka.java)Receive data from topic "output-stream", analyze and insert data into MySQL database ("coSale" database, table "orders").
+1. [TranfomrKafka](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/blob/main/src/main/java/org/apache/beam/examples/TranformKafka.java)]  perform calculations taking only the columns needed to analyze the data. It uses a fixed 10 second window to aggregate counts.
+2. [ConsumerKafa](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/blob/main/src/main/java/org/apache/beam/examples/ConsumerKafka.java)Receive data from topic "output-stream", analyze and insert data into MySQL database ("coSale" database, table "orders").
 ### Run the Examples
 
 Each example can be run locally, in Yarn cluster or in standalone cluster. Here we use KafkaWordCount as an example.
