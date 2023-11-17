@@ -1,7 +1,13 @@
-
 # ETL Ecommerce data from csv to MySQL using Kafka with Samza. Visualize data with Grafana
+
 ## Introduction 
+
 ETL sales data using Samza + Kafka. Then use Grafana to visualize the data
+ - Data source: https://data.mendeley.com/datasets/8gx2fvg2k6/5/files/72784be5-36d3-44fe-b75d-0edbf1999f65
+ - Introduction dataset: DataCo Global's supply chain dataset. Includes the company's transactions with customers. The data set includes 53 attributes ranging from order and shipping information to sales information, 180,519 rows, and features are a mix of text and numeric data, with the exception of row data. be positioned and sold. Specifically, there are 24 character columns and 28 numeric columns.
+
+![image](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/assets/115699195/afab84d9-3737-4f82-9c55-868b634b36b2)
+
 
 ### Example Pipelines
 The following examples are included:
