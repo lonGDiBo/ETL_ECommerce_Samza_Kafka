@@ -1,5 +1,5 @@
 
-# Apache Beam Examples Using SamzaRunner
+# ETL Ecommerce data from csv to MySQL using Kafka with Samza. Visualize data with Grafana
 ## Introduction 
 ETL sales data using Samza + Kafka. Then use Grafana to visualize the data
 
@@ -7,7 +7,7 @@ ETL sales data using Samza + Kafka. Then use Grafana to visualize the data
 The following examples are included:
 
 1. (https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/blob/main/src/main/java/org/apache/beam/examples/TranformKafka.java)]  perform calculations taking only the columns needed to analyze the data. It uses a fixed 10 second window to aggregate counts.
-2. https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/blob/main/src/main/java/org/apache/beam/examples/ConsumerKafka.java
+2. (https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/blob/main/src/main/java/org/apache/beam/examples/ConsumerKafka.java)Receive data from topic "output-stream", analyze and insert data into MySQL database ("coSale" database, table "orders").
 ### Run the Examples
 
 Each example can be run locally, in Yarn cluster or in standalone cluster. Here we use KafkaWordCount as an example.
@@ -35,11 +35,7 @@ All the downloaded package files will be put under `deploy` folder. Once the gri
 you can verify that Yarn is up and running by going to http://localhost:8088. You can also choose to
 bring them up separately, e.g.:
 
-```
-$ scripts/grid install zookeeper
-$ scripts/grid start zookeeper
-```
-Now let's create a Kafka topic named "input-text" for this example:
+Create a Kafka topic named "input-text" for this example:
 
 ```
 $ ./deploy/kafka/bin/kafka-topics.sh  --zookeeper localhost:2181 --create --topic input-text --partitions 10 --replication-factor 1
@@ -52,6 +48,8 @@ You can run directly within the project using maven:
 $ mvn compile exec:java -Dexec.mainClass=org.apache.beam.examples.TranformKafka \
     -Dexec.args="--runner=SamzaRunner --experiments=use_deprecated_read" -P samza-runner
 ```
+
+![image](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/assets/115699195/724b350b-0192-4bc3-8919-268cdb30baf7)
 
 #### Packaging Your Application
 To execute the example in either Yarn or standalone, you need to package it first.
@@ -70,44 +68,61 @@ set each Kafka partition in a split, we can set a large "maxSourceParallelism" v
 is the upper bound of the number of splits.
 
 ```
-$ deploy/examples/bin/run-beam-standalone.sh org.apache.beam.examples.KafkaWordCount \
+$ deploy/examples/bin/run-beam-standalone.sh org.apache.beam.examples.TranformKafka \
     --configFilePath=$PWD/deploy/examples/config/standalone.properties --maxSourceParallelism=1024
 ```
 
 #### Run Yarn Cluster
 Similar to running standalone, we can use the `run-beam-yarn.sh` to run the examples
 in Yarn cluster. The config file is provided as `config/yarn.properties`. To run the 
-KafkaWordCount example in yarn:
+TranformKafka example in yarn:
 
 ```
-$ deploy/examples/bin/run-beam-yarn.sh org.apache.beam.examples.KafkaWordCount \
+$ deploy/examples/bin/run-beam-yarn.sh org.apache.beam.examples.TranformKafka \
     --configFilePath=$PWD/deploy/examples/config/yarn.properties --maxSourceParallelism=1024
 ```
 
-#### Validate the Pipeline Results
-Now the pipeline is deployed to either locally, standalone or Yarn. Let's check out the results. First we start a kakfa consumer to listen to the output:
-
+### Run Consumer
+Compile and run the Java program defined in the org.apache.beam.examples.ConsumerKafka class using the Maven project management tool.
 ```
-$ ./deploy/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic word-count --property print.key=true
-```
-
-Then let's publish a few lines to the input Kafka topic:
-
-```
-$ ./deploy/kafka/bin/kafka-console-producer.sh --topic input-text --broker-list localhost:9092
-Nory was a Catholic because her mother was a Catholic, and Nory’s mother was a Catholic because her father was a Catholic, and her father was a Catholic because his mother was a Catholic, or had been.
+$ mvn compile exec:java -Dexec.mainClass=org.apache.beam.examples.ConsumerKafka
 ```
 
+![image](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/assets/115699195/c655079a-b09f-402e-a5d8-f29cdf8f2f5e)
 
-### Beyond Examples
-Feel free to build more complex pipelines based on the examples above, and reach out to us:
+### Run Producer
+Command to send data from CSV file (CoDataset.csv) into Kafka topic ("input-text"):
+./deploy/kafka/bin/kafka-console-producer.sh: Run Kafka Console Producer.
 
-* Subscribe and mail to [user@beam.apache.org](mailto:user@beam.apache.org) for any Beam questions.
+--topic input-text: Send message to Kafka topic "input-text".
 
-* Subscribe and mail to [user@samza.apache.org](mailto:user@samza.apache.org) for any Samza questions.
+--broker-list localhost:9092: Connect to the Kafka broker at localhost and port 9092.
+
+--property "parse.key=true": Enable parsing for messages, ensuring key usage.
+
+--property "key.separator=,": Use comma as separator between key and value in message.
+
+```
+$ ./deploy/kafka/bin/kafka-console-producer.sh --topic input-text --broker-list localhost:9092 --property "parse.key=true" --property "key.separator=," < /home/minhlong/Downloads/CoDataset.csv
+```
+![image](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/assets/115699195/fef8c529-922d-4922-bba6-e9f57a290d53)
+
+### Project Outcome
+After successfully extracting data. Check if the database "coSale" has successfully loaded data
++ COnsumer
+![image](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/assets/115699195/5e9ccadb-cc47-400f-90e6-4402eff1c989)
++ Mysql
+![image](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/assets/115699195/430c87a9-9026-48de-bd75-8aee750b848d)
+![image](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/assets/115699195/6efac853-e452-4b43-93fa-30510d7803d1)
+
++ Next, we use Grafana to analyze connection data from Mysql
+  + How to install Grafana for ubuntu 22.04 --> https://www.youtube.com/watch?v=fcFfOoDEQH4&t=456s
+   ![image](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/assets/115699195/0f1e545f-76a2-4f2d-9c30-1db1fac977c9)
+
+After successfully connecting Mysql to Grafana, we visualize that data as a chart to support analysis.
+![image](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/assets/115699195/0d2f00d8-de37-43bb-91d4-c9fe02aa9816)
 
 ### More Information
-
-* [Apache Beam](http://beam.apache.org)
-* [Apache Samza](https://samza.apache.org/)
-* Quickstart: [Java](https://beam.apache.org/get-started/quickstart-java), [Python](https://beam.apache.org/get-started/quickstart-py), [Go](https://beam.apache.org/get-started/quickstart-go)
+- Apache Beam
+- Apache Samza
+- Quickstart: Java, Python, Go
