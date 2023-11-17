@@ -38,7 +38,7 @@ public class KafkaWordCount2 {
 
                 	            if (columns.length >= 3) {  // Assuming you want to concatenate columns 1, 2, and 3
                 	                String key = columns[0];
-                	                String value = columns[1] + " " + columns[2] + " " + columns[3];  // Adjust the indices based on your actual data
+                	                String value = columns[6] + "," + columns[7] + "," + columns[27]+ "," + columns[28]+ "," + columns[35]+ "," + columns[36] + "," + columns[43]+"," + columns[47]+"," + columns[48];  // Adjust the indices based on your actual data
                 	                return KV.of(key, value);
                 	            } else {
                 	                // Handle the case where there are not enough columns
