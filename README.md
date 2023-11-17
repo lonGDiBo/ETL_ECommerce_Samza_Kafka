@@ -8,6 +8,7 @@ ETL sales data using Samza + Kafka. Then use Grafana to visualize the data
 
 ![image](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/assets/115699195/afab84d9-3737-4f82-9c55-868b634b36b2)
 
+Get ideas from: (https://github.com/apache/samza-beam-examples) The examples in that repository serve to demonstrate running Beam pipelines with SamzaRunner locally, in Yarn cluster, or in standalone cluster with Zookeeper. More complex pipelines can be built from here and run in similar manner.
 
 ### Example Pipelines
 The following examples are included:
