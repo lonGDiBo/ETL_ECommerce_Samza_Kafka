@@ -17,7 +17,7 @@ The following examples are included:
 2. [ConsumerKafa](https://github.com/lonGDiBo/ETL_ECommerce_Samza_Kafka/blob/main/src/main/java/org/apache/beam/examples/ConsumerKafka.java) Receive data from topic "output-stream", analyze and insert data into MySQL database ("coSale" database, table "orders").
 ### Run the Examples
 
-Each example can be run locally, in Yarn cluster or in standalone cluster. Here we use KafkaWordCount as an example.
+Each example can be run locally, in Yarn cluster or in standalone cluster.
 
 #### Set Up
 1. Download and install [JDK version 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). Verify that the JAVA_HOME environment variable is set and points to your JDK installation.
