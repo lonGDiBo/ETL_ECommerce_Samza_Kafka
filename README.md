@@ -79,16 +79,6 @@ $ deploy/examples/bin/run-beam-standalone.sh org.apache.beam.examples.TranformKa
     --configFilePath=$PWD/deploy/examples/config/standalone.properties --maxSourceParallelism=1024
 ```
 
-#### Run Yarn Cluster
-Similar to running standalone, we can use the `run-beam-yarn.sh` to run the examples
-in Yarn cluster. The config file is provided as `config/yarn.properties`. To run the 
-TranformKafka example in yarn:
-
-```
-$ deploy/examples/bin/run-beam-yarn.sh org.apache.beam.examples.TranformKafka \
-    --configFilePath=$PWD/deploy/examples/config/yarn.properties --maxSourceParallelism=1024
-```
-
 ### Run Consumer
 Compile and run the Java program defined in the org.apache.beam.examples.ConsumerKafka class using the Maven project management tool.
 ```
